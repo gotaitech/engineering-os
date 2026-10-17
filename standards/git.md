@@ -49,15 +49,18 @@ Once it is safe to switch, update local `main`, then create the task branch:
 
 ```sh
 git checkout main
-git pull origin main
+git pull --ff-only origin main
 ```
 
-Check each command's result before continuing. If local `main` has unexpected
-commits, diverges, or the pull fails, stop and inspect; do not reset it to
-match the remote or create an accidental integration commit. Do not choose
-a pull reconciliation strategy blindly. Respect the project's strategy
-and the history-rewriting restrictions below. A destructive reset is not
-normal synchronization.
+Check each command's result before continuing. `--ff-only` permits only a
+fast-forward and prevents Git from silently choosing merge/rebase behavior
+when local `main` has diverged. If fast-forward fails:
+
+STOP → inspect → do not automatically reset, rebase, or merge.
+
+Unexpected local commits or divergence require an understood, authorized
+resolution before continuing. A destructive reset is not normal
+synchronization.
 
 The example assumes `origin` is the intended project remote. Use the
 project's documented remote if different. Do not switch away from an
@@ -137,10 +140,17 @@ and PR references; a task ID need not be repeated on every line.
 
 # AI Commit Rules
 
-AI agents may prepare changes and commits only within their authorized
-task and tool permissions. Permission to edit is not automatically
-permission to commit, push, create a PR, or merge. Explicit instructions
-such as **Do not commit** and **Do not push** must be obeyed.
+AI agents may edit only within their assigned scope and permissions. They
+may commit, push, or open a PR only when an explicit Human Tech Lead
+instruction or explicit task instructions grant that specific action.
+Being the Assigned Agent, having repository access, having a capable tool,
+or having permission to edit does not itself grant commit, push, PR
+creation, or merge authority.
+
+Tool permissions must also allow the operation; they never supply authority
+on their own. Explicit instructions such as **Do not commit** and
+**Do not push** must be obeyed. Commit/push/PR authority does not grant
+merge authority.
 
 Agents must not:
 
@@ -153,7 +163,10 @@ Agents must not:
 Inspect existing changes before editing and before committing. Preserve
 pre-existing changes, stage only authorized content, and report conflicts
 or ambiguity. Do not unstage or overwrite another contributor's work as
-an automatic cleanup step.
+an automatic cleanup step. If unrelated changes are already staged and the
+intended commit cannot safely be created without altering another user's
+staging state, STOP and report/ask. Do not silently unstage, discard,
+include, or rewrite those changes.
 
 ---
 
@@ -178,8 +191,10 @@ If a file contains unrelated edits, stage only the intended hunks or ask
 for clarification. A path belonging to the task does not make every edit
 in that path authorized.
 
-`git add .` is allowed only after verifying that every change it will stage
-belongs to the intended commit. Never stage blindly.
+`git add .`, `git add -A`, and `git commit -a` are bulk operations. Use them
+only after verifying that all included changes belong to the intended
+commit, including any already-staged content. They must not be the default
+for AI agents. Never stage or commit blindly.
 
 ---
 
@@ -224,23 +239,70 @@ Rebasing a shared branch requires explicit authorization.
 
 Preserve local changes before integration. Resolve conflicts deliberately,
 inspect the resulting diff, and rerun affected validation. Changes after
-review must receive appropriate re-review; previous review and CI results
-must not be presented as evidence for unverified new content.
+review follow the rules below; previous review and CI results must not be
+presented as evidence for unverified new content.
+
+## Changes After Review Starts
+
+These rules apply when updating from `main` or resolving conflicts changes
+task content. Task status transitions and their ownership remain defined
+by [standards/task-specification.md](task-specification.md#transitions).
+
+- **During IN REVIEW:** the Assigned Agent reports the update to the
+  Reviewer, identifying the previously reviewed revision, the new revision,
+  and the changed content. The Reviewer determines the required re-review
+  scope. Existing review does not cover unreviewed changes. Rerun affected
+  validation, report actual results, and follow the task standard for any
+  required status change. Do not let review continue against an unidentified
+  moving target.
+- **During READY FOR HUMAN APPROVAL:** if synchronization, conflict
+  resolution, or another Git operation changes reviewed content, the
+  Assigned Agent must STOP and report the changed content to the Human
+  Tech Lead **before pushing it to the open PR branch**. Do not first
+  publish changed or unreviewed content to the approval target, and do not
+  silently push it while retaining READY FOR HUMAN APPROVAL. Wait for the
+  Tech Lead to determine the lifecycle action according to the task
+  standard. Where correction is required, use the existing CHANGES
+  REQUESTED path; do not invent a direct transition back to IN REVIEW.
+  Affected validation and independent review must be repeated before the
+  task can return to READY FOR HUMAN APPROVAL. Earlier review or approval
+  cannot authorize merging changed, unreviewed content.
+- **No relevant content change:** record the synchronization revision and
+  the assessment that reviewed task content is unchanged in the PR or
+  handoff where appropriate. Do not imply new validation was executed.
+
+If the update invalidates requirements, scope, architecture, or another
+readiness condition, follow the task standard's BLOCKED recovery and
+renewed readiness verification. Git synchronization does not resolve a
+governance blocker.
 
 ---
 
-# Force Push and History Rewriting
+# Destructive Operations and History Rewriting
 
-Force pushes and destructive history rewriting are high-risk operations,
-not routine workflow. AI agents must not perform any of the following
-without explicit Human Tech Lead authorization for the specific situation
-and an understood impact:
+Any Git operation that can discard user work, delete remote/shared work,
+or rewrite published history requires explicit authorization for the
+specific situation and an understood impact. For AI agents, authorization
+must come from the Human Tech Lead. High-risk examples include:
 
 - `git push --force`
 - `git push --force-with-lease`
 - `git reset --hard`
 - `git clean -fd` (including broader destructive clean variants)
 - Destructive interactive rebase or equivalent history rewriting
+- `git restore .` or `git checkout -- <path>` when they could discard work
+  that is not known to belong solely to the agent
+- `git stash drop` or `git stash clear`
+- `git branch -D`
+- `git push --delete`
+- `git commit --amend` on already-pushed commits
+
+These examples are not an exhaustive whitelist. Evaluate the actual effect,
+ownership, and publication state, including equivalent commands or variants.
+Ordinary scoped use of `git restore` for explicitly identified, uncommitted
+changes created solely by the agent within its authorized task is not
+categorically forbidden. Inspect the exact diff and path first; if ownership
+or impact is uncertain, preserve the work and ask rather than discard it.
 
 Describe the affected branches, commits, local files, and collaborators
 before authorization. Tool permission alone is insufficient.
@@ -262,8 +324,8 @@ run, report the gap rather than silently waiving the task's completion gate.
 BLOCKER and HIGH findings must be resolved before merge. MEDIUM findings
 follow the task standard's correction or justified-deferral rules.
 
-The Tech Lead controls integration. Claude Code, Codex, and Copilot must
-not merge PRs under their current role definitions. An implementation
+AI agents must not merge pull requests. The Human Tech Lead controls final
+merge according to AGENTS.md and the feature workflow. An implementation
 agent cannot merge its own work merely because review returned PASS.
 
 Merge commit, squash, or rebase merge is project-specific. Follow the
@@ -292,7 +354,9 @@ For merge or rebase conflicts:
 3. Resolve deliberately, review the full resulting diff, and check for
    leftover conflict markers.
 4. Rerun relevant validation and report actual results.
-5. Obtain independent re-review of affected content before merge.
+5. Apply [Changes After Review Starts](#changes-after-review-starts) when
+   review has begun, and obtain independent review of affected content
+   before merge.
 
 Never blindly choose `ours` or `theirs`. If resolving the conflict requires
 a business, architecture, scope, or security-sensitive decision:
@@ -368,7 +432,8 @@ permission or an expansion of an agent's authority.
 # Practical Example
 
 These are examples, not permission to commit or push. Run only actions
-allowed by the current task and tool permissions. When told **Do not commit**
+granted by explicit Human Tech Lead instruction or explicit task
+instructions, and permitted by the tools. When told **Do not commit**
 or **Do not push**, leave those commands unexecuted and hand off the diff.
 The task must be assigned and READY FOR IMPLEMENTATION before work starts.
 The startup example assumes a safely preserved working tree and local
@@ -377,7 +442,7 @@ The startup example assumes a safely preserved working tree and local
 ```sh
 git status
 git checkout main
-git pull origin main
+git pull --ff-only origin main
 git checkout -b feature/TASK-021-user-login
 
 # Implement the approved task and run relevant validation.

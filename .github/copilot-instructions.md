@@ -113,7 +113,7 @@ authority. In agent mode, the coding agent, or PR review:
 - Use the normal branch and PR workflow.
 - Run relevant validation where possible and report actual commands and
   results.
-- Never merge your own PR.
+- Never merge pull requests, including your own.
 - Never act as the sole reviewer of your own implementation. Your PR
   review is never the sole required review.
 

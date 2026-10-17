@@ -337,7 +337,9 @@ Each finding should state:
 
 - Address every BLOCKER and HIGH finding before merge.
 - For each finding, either fix it or explain why it does not apply.
-  Do not ignore findings silently.
+  Do not ignore findings silently. A BLOCKER or HIGH finding is resolved
+  only as defined in [standards/code-review.md](../standards/code-review.md#severity-levels);
+  the implementer cannot close it alone.
 - Escalate disagreements on severity to the Tech Lead.
 
 ---
@@ -371,7 +373,7 @@ Claude Code for review) or to the human Tech Lead.
 ```markdown
 ## Handoff: TASK-XXX — <short title>
 
-**Status:** IN PROGRESS | READY FOR REVIEW | BLOCKED | DONE
+**Status:** IN PROGRESS | READY FOR REVIEW | BLOCKED
 **Mode:** IMPLEMENTATION | REVIEW
 **Branch:** <branch name>
 **Task / PR:** <task reference and pull request link, if available>

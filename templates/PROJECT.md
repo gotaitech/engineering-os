@@ -125,7 +125,9 @@ Technical flows and material choices belong in ARCHITECTURE/ADRs. -->
 <Confirmed deployment model (manual/automated where applicable), release cadence
 only if supplied, and whether merge, tag, release creation, or another event can
 trigger deployment. Link the architecture's actual trigger/gate model and the
-project's production authorization mechanism/reference. Unknowns remain TBD.>
+project's production authorization mechanism/reference. Unknowns remain TBD.
+If deployment may be automated but the trigger is TBD, treat it as a material
+unknown and resolve it before merging production-affecting changes.>
 
 Follow the [Release workflow](../workflows/release.md). Recording automation or
 a trigger here does not authorize its use. Required production authorization
@@ -145,6 +147,9 @@ Do not invent a support matrix. Use Not specified for missing requirements.>
 | <Approved stack, directory structure, naming, build/test/local development command, or documentation location> | <Actual convention or command; no secrets> | <Source> |
 
 Conventions specialize Engineering OS without silently weakening governance.
+A convention that conflicts with AGENTS.md or an Engineering OS standard (for
+example, skipping required tests) is not valid; report it as a conflict.
+Exceptions use existing exception governance.
 Technology facts link applicable ADRs where a material decision was required.
 Listed validation commands are expected instructions, not evidence they ran or
 passed. Actual results belong in task/handoff records under the
@@ -165,8 +170,9 @@ Important project state must be persisted or referenced in repository documents,
 not only in chat. Apply the source-of-truth rules in AGENTS.md; this table creates
 no new precedence order. Material architecture decisions follow the
 [ADR standard](../standards/architecture-decisions.md), using
-[the ADR template](ADR.md). This document is not a decision log and cannot
-override an APPROVED ADR.
+[the ADR template](ADR.md). This document is not a decision log; editing it
+does not change an approved decision or requirement. Conflicts between this
+document, its sources, and ADRs are stopped and reported under AGENTS.md.
 
 ## 17. Known Risks / Limitations
 

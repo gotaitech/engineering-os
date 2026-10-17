@@ -247,7 +247,8 @@ Rules:
   relationships, indexes where needed, and migration impact on
   existing data.
 - Significant architectural decisions must be documented as decision
-  records using [templates/DECISION.md](../templates/DECISION.md).
+  records using [templates/ADR.md](../templates/ADR.md), under
+  [standards/architecture-decisions.md](../standards/architecture-decisions.md).
 
 A decision is significant when it is hard to reverse or affects multiple
 modules, public interfaces, data models, security, or operations.
@@ -320,9 +321,15 @@ Each implementation task should normally contain:
 | Testing Expectations   | What must be tested and how it will be validated              |
 | Definition of Done     | AGENTS.md Definition of Done, plus any task-specific items    |
 
-Use [templates/TASK.md](../templates/TASK.md) when it defines a task
-format. If the template and this table differ, report the difference to
-the Tech Lead.
+This table is a summary. It does not replace
+[standards/task-specification.md](../standards/task-specification.md) or
+[templates/TASK.md](../templates/TASK.md). Where the table omits or
+abbreviates detail, complete the task from the standard's required fields
+and readiness rules; an abbreviated summary is not an instruction conflict.
+If task artifacts contain genuinely contradictory instructions, do not
+choose one yourself: stop the affected task preparation, report the
+conflict to the Tech Lead, and continue only after it is resolved through
+existing governance (see [Instruction Conflicts](#instruction-conflicts)).
 
 ---
 
@@ -341,8 +348,10 @@ a task until the task exists in the repository.
 
 # Definition of Done
 
-A task may be marked **READY FOR IMPLEMENTATION** only when all of the
-following are true:
+A task may be marked **READY FOR IMPLEMENTATION** only when the full
+[readiness gate](../standards/task-specification.md#ready-for-implementation)
+is met, including a named Assigned Agent and independent Reviewer. For
+ChatGPT's specification work, this includes:
 
 - Requirements and acceptance criteria are written and testable.
 - Assumptions and open questions are listed explicitly.
