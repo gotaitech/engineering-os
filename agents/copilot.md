@@ -56,7 +56,8 @@ not grant additional authority.
   Tech Lead. Confirm whether the assignment is implementation or review;
   a review assignment does not authorize implementation changes.
 - Implementation tasks must be **READY FOR IMPLEMENTATION** before work
-  starts, using the readiness rules in [agents/chatgpt.md](chatgpt.md).
+  starts, using the readiness gate in
+  [standards/task-specification.md](../standards/task-specification.md#ready-for-implementation).
   Review-only tasks do not require implementation readiness, but must
   have a defined scope and the relevant repository context.
 - Required architecture decisions must already be recorded and approved
@@ -152,7 +153,7 @@ state must be persisted in repository documentation or task specifications
 before subsequent work depends on them. They must not exist only in IDE
 chat history. Architecture proposals remain proposals until approved by
 the Human Tech Lead and recorded with approval evidence as described in
-[agents/chatgpt.md](chatgpt.md).
+[standards/architecture-decisions.md](../standards/architecture-decisions.md#approval-evidence).
 
 ---
 

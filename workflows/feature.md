@@ -205,9 +205,9 @@ The Reviewer, who did not implement the change, reviews against:
 - Backward compatibility
 - Scope
 
-Use the review rules and severity levels in AGENTS.md
-(BLOCKER / HIGH / MEDIUM / LOW / SUGGESTION). BLOCKER and HIGH findings
-must be resolved before approval.
+Use [standards/code-review.md](../standards/code-review.md) and its
+severity levels (BLOCKER / HIGH / MEDIUM / LOW / SUGGESTION). BLOCKER and
+HIGH findings must be resolved before approval.
 
 The Reviewer owns the findings and classifies each one
 ([Review Findings](../standards/task-specification.md#review-findings)):
@@ -228,7 +228,10 @@ Each return to IN REVIEW requires independent review again.
 
 # Step 10 — Pull Request
 
-The pull request gives the Tech Lead what is needed for final review:
+Opening the pull request requires the permission described in the
+[Git standard](../standards/git.md#ai-commit-rules); being the Assigned
+Agent does not grant it. The pull request gives the Tech Lead what is
+needed for final review:
 
 - Task reference (`TASK-NNN`) and path to the task file
 - Summary and implementation notes
@@ -280,7 +283,11 @@ The Tech Lead performs the final review and may:
 
 Merge happens only after the Tech Lead's approval and any repository
 protections (required checks, branch rules) are satisfied. Production
-releases remain under human control and are outside this workflow.
+releases remain under human control and follow
+[workflows/release.md](release.md). Where merge triggers production
+deployment or migrations, merge is a production trigger: release readiness
+and production authorization must be complete before it
+([Automated Deployment](release.md#8-automated-deployment)).
 
 ## Approval, Merge, and DONE
 

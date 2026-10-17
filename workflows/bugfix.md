@@ -91,7 +91,8 @@ existing production evidence when direct reproduction is unsafe.
 Do not require production reproduction or mutate production data to reproduce a
 bug without applicable explicit authorization. Prefer synthetic/generated or
 properly de-identified fixtures; production-derived data follows the
-[database test-data rules](../standards/database.md#29-migration-testing).
+database [test-data](../standards/database.md#28-test-data) and
+[sensitive-data](../standards/database.md#16-sensitive-data) rules.
 
 If exact reproduction is impossible, record the strongest available evidence,
 conditions checked, limitations, and uncertainty. Correlation alone does not
@@ -398,8 +399,10 @@ Merge requires required validation, independent review, CI, Tech Lead approval,
 and branch protections. AI agents must not merge PRs or infer authority from
 completion, PASS, access, assignment, or tool capability. Do not bypass required
 checks. PR creation is not approval; merging an implementation PR is not ADR
-approval or production authorization. The task remains READY FOR HUMAN APPROVAL
-through approval and merge under the feature workflow.
+approval or production authorization. Where merge triggers production
+deployment, production authorization must be recorded before merge
+([release workflow](release.md#8-automated-deployment)). The task remains
+READY FOR HUMAN APPROVAL through approval and merge under the feature workflow.
 
 # 28. Post-Merge Verification
 

@@ -243,8 +243,8 @@ feasible.
 
 # 12. Database Interaction
 
-`standards/database.md` will own schema and migration standards. Until it
-exists, and in addition to
+[standards/database.md](database.md) is the authoritative database standard,
+including schemas and migrations. In addition to it and to
 [standards/security.md](security.md#14-database-security), backend code:
 
 - Uses parameterized queries or an equivalent safe mechanism.
@@ -548,7 +548,7 @@ multiple tenants, or external integrations.
 | Area                 | Check                                                                                   |
 | -------------------- | --------------------------------------------------------------------------------------- |
 | Requirements         | Behavior, actors, side effects, and failure behavior defined; nothing invented          |
-| Architecture         | Boundaries respected; no business logic in transport; approved ADRs followed             |
+| Architecture         | Boundaries respected; business rules have clear ownership, not obscured by transport; approved ADRs followed |
 | Interface contract   | Shapes, errors, and compatibility explicit; no silent semantic change                    |
 | Validation           | Untrusted input validated at a trusted boundary; syntactic vs business validation clear  |
 | Authorization        | Enforced in the backend for the actual action and resource                              |

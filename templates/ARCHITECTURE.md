@@ -32,7 +32,8 @@ never approve. Update this view when approved changes affect it; do not silently
 rewrite APPROVED ADR history. If this document, implementation evidence, or a
 diagram conflicts with an APPROVED ADR or another instruction, stop and report
 the conflict to the Tech Lead for resolution through existing governance.
-Neither PROJECT nor ARCHITECTURE overrides an ADR.
+Editing PROJECT or ARCHITECTURE does not change an approved decision; conflicts
+are stopped and reported under AGENTS.md.
 
 This is not an ADR, proposal backlog, decision history, or implementation task.
 Keep decision rationale in ADRs and bounded execution/acceptance criteria in
@@ -142,7 +143,9 @@ performs an already-authorized change; documenting it does not grant authority.
 
 <!-- Identify actual manual deployments, merge/tag/release triggers, environment
 approval gates, app-startup migrations, and automated infrastructure apply where
-they exist. Explicitly record which events can cause production execution. -->
+they exist. Explicitly record which events can cause production execution.
+A TBD trigger where deployment may be automated is a material unknown to resolve
+before merging production-affecting changes. -->
 
 Follow the [Release workflow](../workflows/release.md#8-automated-deployment) and
 [automatic migration rules](../standards/database.md#automatic-migration-execution).

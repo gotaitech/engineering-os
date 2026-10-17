@@ -94,7 +94,8 @@ Rules:
   blocker. Moving it *out* of BLOCKED requires readiness verification.
 - The Tech Lead may move a task to any status and records the reason.
   A task leaving BLOCKED for implementation still passes through
-  READY FOR IMPLEMENTATION.
+  READY FOR IMPLEMENTATION, and DONE still requires the
+  [DONE](#done) gate.
 - Every move to or from BLOCKED, CHANGES REQUESTED, READY FOR
   IMPLEMENTATION, or DONE is recorded in the task's Status History with
   who made it, why, and a repository reference to any evidence.
@@ -278,7 +279,7 @@ Every architecture decision the task requires must:
 
 - Exist in repository documentation
 - Have status Approved, with Human Tech Lead approval evidence as
-  defined in [agents/chatgpt.md](../agents/chatgpt.md#decision-status)
+  defined in [standards/architecture-decisions.md](architecture-decisions.md#approval-evidence)
 - Be referenced by path in the task's Architecture Decisions section
 
 If any required decision is Proposed, unresolved, Rejected, Superseded
